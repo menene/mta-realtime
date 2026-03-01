@@ -1,0 +1,2312 @@
+[
+  {
+    "id": "000001G",
+    "trip_update": {
+      "trip": {
+        "tripId": "066900_G..S09X002",
+        "startTime": "11:08:30",
+        "startDate": "20260228",
+        "routeId": "G"
+      }
+    }
+  },
+  {
+    "id": "000002G",
+    "vehicle": {
+      "trip": {
+        "tripId": "066900_G..S09X002",
+        "startTime": "11:08:30",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "currentStopSequence": 12,
+      "currentStatus": "STOPPED_AT",
+      "timestamp": "1772296217",
+      "stopId": "F27S"
+    }
+  },
+  {
+    "id": "000003G",
+    "trip_update": {
+      "trip": {
+        "tripId": "065900_G..S09X002",
+        "startTime": "10:59:08",
+        "startDate": "20260228",
+        "routeId": "G"
+      }
+    }
+  },
+  {
+    "id": "000004G",
+    "vehicle": {
+      "trip": {
+        "tripId": "065900_G..S09X002",
+        "startTime": "10:59:08",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "currentStopSequence": 12,
+      "currentStatus": "STOPPED_AT",
+      "timestamp": "1772295540",
+      "stopId": "F27S"
+    }
+  },
+  {
+    "id": "000005G",
+    "trip_update": {
+      "trip": {
+        "tripId": "067900_G..S09X002",
+        "startTime": "11:18:35",
+        "startDate": "20260228",
+        "routeId": "G"
+      }
+    }
+  },
+  {
+    "id": "000006G",
+    "vehicle": {
+      "trip": {
+        "tripId": "067900_G..S09X002",
+        "startTime": "11:18:35",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "currentStopSequence": 12,
+      "currentStatus": "STOPPED_AT",
+      "timestamp": "1772296845",
+      "stopId": "F27S"
+    }
+  },
+  {
+    "id": "000007G",
+    "trip_update": {
+      "trip": {
+        "tripId": "068700_G..N09X002",
+        "startTime": "11:26:27",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "stopTimeUpdate": [
+        {
+          "arrival": {
+            "time": "1772297385"
+          },
+          "departure": {
+            "time": "1772297385"
+          },
+          "stopId": "G34N"
+        },
+        {
+          "arrival": {
+            "time": "1772297455"
+          },
+          "departure": {
+            "time": "1772297455"
+          },
+          "stopId": "G33N"
+        }
+      ]
+    }
+  },
+  {
+    "id": "000008G",
+    "vehicle": {
+      "trip": {
+        "tripId": "068700_G..N09X002",
+        "startTime": "11:26:27",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "currentStopSequence": 11,
+      "currentStatus": "STOPPED_AT",
+      "timestamp": "1772297385",
+      "stopId": "G34N"
+    }
+  },
+  {
+    "id": "000009G",
+    "trip_update": {
+      "trip": {
+        "tripId": "068900_G..S09X002",
+        "startTime": "11:29:06",
+        "startDate": "20260228",
+        "routeId": "G"
+      }
+    }
+  },
+  {
+    "id": "000010G",
+    "vehicle": {
+      "trip": {
+        "tripId": "068900_G..S09X002",
+        "startTime": "11:29:06",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "currentStopSequence": 12,
+      "currentStatus": "STOPPED_AT",
+      "timestamp": "1772297335",
+      "stopId": "F27S"
+    }
+  },
+  {
+    "id": "000011G",
+    "trip_update": {
+      "trip": {
+        "tripId": "069700_G..N09X002",
+        "startTime": "11:37:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "stopTimeUpdate": [
+        {
+          "arrival": {
+            "time": "1772297455"
+          },
+          "departure": {
+            "time": "1772297455"
+          },
+          "stopId": "F21N"
+        },
+        {
+          "arrival": {
+            "time": "1772297545"
+          },
+          "departure": {
+            "time": "1772297545"
+          },
+          "stopId": "F20N"
+        },
+        {
+          "arrival": {
+            "time": "1772297755"
+          },
+          "departure": {
+            "time": "1772297755"
+          },
+          "stopId": "A42N"
+        },
+        {
+          "arrival": {
+            "time": "1772297965"
+          },
+          "departure": {
+            "time": "1772297965"
+          },
+          "stopId": "G36N"
+        },
+        {
+          "arrival": {
+            "time": "1772298085"
+          },
+          "departure": {
+            "time": "1772298085"
+          },
+          "stopId": "G35N"
+        },
+        {
+          "arrival": {
+            "time": "1772298145"
+          },
+          "departure": {
+            "time": "1772298145"
+          },
+          "stopId": "G34N"
+        },
+        {
+          "arrival": {
+            "time": "1772298235"
+          },
+          "departure": {
+            "time": "1772298235"
+          },
+          "stopId": "G33N"
+        }
+      ]
+    }
+  },
+  {
+    "id": "000012G",
+    "vehicle": {
+      "trip": {
+        "tripId": "069700_G..N09X002",
+        "startTime": "11:37:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "currentStopSequence": 5,
+      "currentStatus": "STOPPED_AT",
+      "timestamp": "1772297350",
+      "stopId": "F22N"
+    }
+  },
+  {
+    "id": "000013G",
+    "trip_update": {
+      "trip": {
+        "tripId": "069900_G..S09X002",
+        "startTime": "11:39:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "stopTimeUpdate": [
+        {
+          "arrival": {
+            "time": "1772297455"
+          },
+          "departure": {
+            "time": "1772297455"
+          },
+          "stopId": "F22S"
+        },
+        {
+          "arrival": {
+            "time": "1772297545"
+          },
+          "departure": {
+            "time": "1772297545"
+          },
+          "stopId": "F23S"
+        },
+        {
+          "arrival": {
+            "time": "1772297635"
+          },
+          "departure": {
+            "time": "1772297635"
+          },
+          "stopId": "F24S"
+        },
+        {
+          "arrival": {
+            "time": "1772297725"
+          },
+          "departure": {
+            "time": "1772297725"
+          },
+          "stopId": "F25S"
+        },
+        {
+          "arrival": {
+            "time": "1772297875"
+          },
+          "departure": {
+            "time": "1772297875"
+          },
+          "stopId": "F26S"
+        },
+        {
+          "arrival": {
+            "time": "1772297965"
+          },
+          "departure": {
+            "time": "1772297965"
+          },
+          "stopId": "F27S"
+        }
+      ]
+    }
+  },
+  {
+    "id": "000014G",
+    "vehicle": {
+      "trip": {
+        "tripId": "069900_G..S09X002",
+        "startTime": "11:39:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "currentStopSequence": 6,
+      "currentStatus": "STOPPED_AT",
+      "timestamp": "1772297375",
+      "stopId": "F21S"
+    }
+  },
+  {
+    "id": "000015G",
+    "trip_update": {
+      "trip": {
+        "tripId": "070900_G..S09X002",
+        "startTime": "11:49:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "stopTimeUpdate": [
+        {
+          "arrival": {
+            "time": "1772297430"
+          },
+          "departure": {
+            "time": "1772297430"
+          },
+          "stopId": "G34S"
+        },
+        {
+          "arrival": {
+            "time": "1772297490"
+          },
+          "departure": {
+            "time": "1772297490"
+          },
+          "stopId": "G35S"
+        },
+        {
+          "arrival": {
+            "time": "1772297610"
+          },
+          "departure": {
+            "time": "1772297610"
+          },
+          "stopId": "G36S"
+        },
+        {
+          "arrival": {
+            "time": "1772297835"
+          },
+          "departure": {
+            "time": "1772297835"
+          },
+          "stopId": "A42S"
+        },
+        {
+          "arrival": {
+            "time": "1772298060"
+          },
+          "departure": {
+            "time": "1772298060"
+          },
+          "stopId": "F20S"
+        },
+        {
+          "arrival": {
+            "time": "1772298150"
+          },
+          "departure": {
+            "time": "1772298150"
+          },
+          "stopId": "F21S"
+        },
+        {
+          "arrival": {
+            "time": "1772298240"
+          },
+          "departure": {
+            "time": "1772298240"
+          },
+          "stopId": "F22S"
+        },
+        {
+          "arrival": {
+            "time": "1772298330"
+          },
+          "departure": {
+            "time": "1772298330"
+          },
+          "stopId": "F23S"
+        },
+        {
+          "arrival": {
+            "time": "1772298420"
+          },
+          "departure": {
+            "time": "1772298420"
+          },
+          "stopId": "F24S"
+        },
+        {
+          "arrival": {
+            "time": "1772298510"
+          },
+          "departure": {
+            "time": "1772298510"
+          },
+          "stopId": "F25S"
+        },
+        {
+          "arrival": {
+            "time": "1772298660"
+          },
+          "departure": {
+            "time": "1772298660"
+          },
+          "stopId": "F26S"
+        },
+        {
+          "arrival": {
+            "time": "1772298750"
+          },
+          "departure": {
+            "time": "1772298750"
+          },
+          "stopId": "F27S"
+        }
+      ]
+    }
+  },
+  {
+    "id": "000016G",
+    "vehicle": {
+      "trip": {
+        "tripId": "070900_G..S09X002",
+        "startTime": "11:49:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "currentStatus": "STOPPED_AT",
+      "timestamp": "1772297340",
+      "stopId": "G33S"
+    }
+  },
+  {
+    "id": "000017G",
+    "trip_update": {
+      "trip": {
+        "tripId": "071700_G..N09X002",
+        "startTime": "11:57:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "stopTimeUpdate": [
+        {
+          "arrival": {
+            "time": "1772297820"
+          },
+          "departure": {
+            "time": "1772297820"
+          },
+          "stopId": "F27N"
+        },
+        {
+          "arrival": {
+            "time": "1772297910"
+          },
+          "departure": {
+            "time": "1772297910"
+          },
+          "stopId": "F26N"
+        },
+        {
+          "arrival": {
+            "time": "1772298060"
+          },
+          "departure": {
+            "time": "1772298060"
+          },
+          "stopId": "F25N"
+        },
+        {
+          "arrival": {
+            "time": "1772298150"
+          },
+          "departure": {
+            "time": "1772298150"
+          },
+          "stopId": "F24N"
+        },
+        {
+          "arrival": {
+            "time": "1772298270"
+          },
+          "departure": {
+            "time": "1772298270"
+          },
+          "stopId": "F23N"
+        },
+        {
+          "arrival": {
+            "time": "1772298360"
+          },
+          "departure": {
+            "time": "1772298360"
+          },
+          "stopId": "F22N"
+        },
+        {
+          "arrival": {
+            "time": "1772298480"
+          },
+          "departure": {
+            "time": "1772298480"
+          },
+          "stopId": "F21N"
+        },
+        {
+          "arrival": {
+            "time": "1772298570"
+          },
+          "departure": {
+            "time": "1772298570"
+          },
+          "stopId": "F20N"
+        },
+        {
+          "arrival": {
+            "time": "1772298780"
+          },
+          "departure": {
+            "time": "1772298780"
+          },
+          "stopId": "A42N"
+        },
+        {
+          "arrival": {
+            "time": "1772298990"
+          },
+          "departure": {
+            "time": "1772298990"
+          },
+          "stopId": "G36N"
+        },
+        {
+          "arrival": {
+            "time": "1772299110"
+          },
+          "departure": {
+            "time": "1772299110"
+          },
+          "stopId": "G35N"
+        },
+        {
+          "arrival": {
+            "time": "1772299170"
+          },
+          "departure": {
+            "time": "1772299170"
+          },
+          "stopId": "G34N"
+        },
+        {
+          "arrival": {
+            "time": "1772299260"
+          },
+          "departure": {
+            "time": "1772299260"
+          },
+          "stopId": "G33N"
+        }
+      ]
+    }
+  },
+  {
+    "id": "000018G",
+    "vehicle": {
+      "trip": {
+        "tripId": "071700_G..N09X002",
+        "startTime": "11:57:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "timestamp": "1772297820",
+      "stopId": "F27N"
+    }
+  },
+  {
+    "id": "000019G",
+    "trip_update": {
+      "trip": {
+        "tripId": "070700_G..N09X002",
+        "startTime": "11:47:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "stopTimeUpdate": [
+        {
+          "arrival": {
+            "time": "1772297388"
+          },
+          "departure": {
+            "time": "1772297388"
+          },
+          "stopId": "F26N"
+        },
+        {
+          "arrival": {
+            "time": "1772297482"
+          },
+          "departure": {
+            "time": "1772297482"
+          },
+          "stopId": "F25N"
+        },
+        {
+          "arrival": {
+            "time": "1772297572"
+          },
+          "departure": {
+            "time": "1772297572"
+          },
+          "stopId": "F24N"
+        },
+        {
+          "arrival": {
+            "time": "1772297692"
+          },
+          "departure": {
+            "time": "1772297692"
+          },
+          "stopId": "F23N"
+        },
+        {
+          "arrival": {
+            "time": "1772297782"
+          },
+          "departure": {
+            "time": "1772297782"
+          },
+          "stopId": "F22N"
+        },
+        {
+          "arrival": {
+            "time": "1772297902"
+          },
+          "departure": {
+            "time": "1772297902"
+          },
+          "stopId": "F21N"
+        },
+        {
+          "arrival": {
+            "time": "1772297992"
+          },
+          "departure": {
+            "time": "1772297992"
+          },
+          "stopId": "F20N"
+        },
+        {
+          "arrival": {
+            "time": "1772298202"
+          },
+          "departure": {
+            "time": "1772298202"
+          },
+          "stopId": "A42N"
+        },
+        {
+          "arrival": {
+            "time": "1772298412"
+          },
+          "departure": {
+            "time": "1772298412"
+          },
+          "stopId": "G36N"
+        },
+        {
+          "arrival": {
+            "time": "1772298532"
+          },
+          "departure": {
+            "time": "1772298532"
+          },
+          "stopId": "G35N"
+        },
+        {
+          "arrival": {
+            "time": "1772298592"
+          },
+          "departure": {
+            "time": "1772298592"
+          },
+          "stopId": "G34N"
+        },
+        {
+          "arrival": {
+            "time": "1772298682"
+          },
+          "departure": {
+            "time": "1772298682"
+          },
+          "stopId": "G33N"
+        }
+      ]
+    }
+  },
+  {
+    "id": "000020G",
+    "vehicle": {
+      "trip": {
+        "tripId": "070700_G..N09X002",
+        "startTime": "11:47:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "currentStopSequence": 1,
+      "currentStatus": "STOPPED_AT",
+      "timestamp": "1772297388",
+      "stopId": "F26N"
+    }
+  },
+  {
+    "id": "000021G",
+    "trip_update": {
+      "trip": {
+        "tripId": "071900_G..S09X002",
+        "startTime": "11:59:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "stopTimeUpdate": [
+        {
+          "arrival": {
+            "time": "1772297940"
+          },
+          "departure": {
+            "time": "1772297940"
+          },
+          "stopId": "G33S"
+        },
+        {
+          "arrival": {
+            "time": "1772298030"
+          },
+          "departure": {
+            "time": "1772298030"
+          },
+          "stopId": "G34S"
+        },
+        {
+          "arrival": {
+            "time": "1772298090"
+          },
+          "departure": {
+            "time": "1772298090"
+          },
+          "stopId": "G35S"
+        },
+        {
+          "arrival": {
+            "time": "1772298210"
+          },
+          "departure": {
+            "time": "1772298210"
+          },
+          "stopId": "G36S"
+        },
+        {
+          "arrival": {
+            "time": "1772298450"
+          },
+          "departure": {
+            "time": "1772298450"
+          },
+          "stopId": "A42S"
+        },
+        {
+          "arrival": {
+            "time": "1772298690"
+          },
+          "departure": {
+            "time": "1772298690"
+          },
+          "stopId": "F20S"
+        },
+        {
+          "arrival": {
+            "time": "1772298780"
+          },
+          "departure": {
+            "time": "1772298780"
+          },
+          "stopId": "F21S"
+        },
+        {
+          "arrival": {
+            "time": "1772298870"
+          },
+          "departure": {
+            "time": "1772298870"
+          },
+          "stopId": "F22S"
+        },
+        {
+          "arrival": {
+            "time": "1772298960"
+          },
+          "departure": {
+            "time": "1772298960"
+          },
+          "stopId": "F23S"
+        },
+        {
+          "arrival": {
+            "time": "1772299050"
+          },
+          "departure": {
+            "time": "1772299050"
+          },
+          "stopId": "F24S"
+        },
+        {
+          "arrival": {
+            "time": "1772299140"
+          },
+          "departure": {
+            "time": "1772299140"
+          },
+          "stopId": "F25S"
+        },
+        {
+          "arrival": {
+            "time": "1772299290"
+          },
+          "departure": {
+            "time": "1772299290"
+          },
+          "stopId": "F26S"
+        },
+        {
+          "arrival": {
+            "time": "1772299380"
+          },
+          "departure": {
+            "time": "1772299380"
+          },
+          "stopId": "F27S"
+        }
+      ]
+    }
+  },
+  {
+    "id": "000022G",
+    "vehicle": {
+      "trip": {
+        "tripId": "071900_G..S09X002",
+        "startTime": "11:59:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "timestamp": "1772297940",
+      "stopId": "G33S"
+    }
+  },
+  {
+    "id": "000023G",
+    "trip_update": {
+      "trip": {
+        "tripId": "072900_G..N09X002",
+        "startTime": "12:09:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "stopTimeUpdate": [
+        {
+          "arrival": {
+            "time": "1772298540"
+          },
+          "departure": {
+            "time": "1772298540"
+          },
+          "stopId": "F27N"
+        },
+        {
+          "arrival": {
+            "time": "1772298630"
+          },
+          "departure": {
+            "time": "1772298630"
+          },
+          "stopId": "F26N"
+        },
+        {
+          "arrival": {
+            "time": "1772298780"
+          },
+          "departure": {
+            "time": "1772298780"
+          },
+          "stopId": "F25N"
+        },
+        {
+          "arrival": {
+            "time": "1772298870"
+          },
+          "departure": {
+            "time": "1772298870"
+          },
+          "stopId": "F24N"
+        },
+        {
+          "arrival": {
+            "time": "1772298990"
+          },
+          "departure": {
+            "time": "1772298990"
+          },
+          "stopId": "F23N"
+        },
+        {
+          "arrival": {
+            "time": "1772299080"
+          },
+          "departure": {
+            "time": "1772299080"
+          },
+          "stopId": "F22N"
+        },
+        {
+          "arrival": {
+            "time": "1772299200"
+          },
+          "departure": {
+            "time": "1772299200"
+          },
+          "stopId": "F21N"
+        },
+        {
+          "arrival": {
+            "time": "1772299290"
+          },
+          "departure": {
+            "time": "1772299290"
+          },
+          "stopId": "F20N"
+        },
+        {
+          "arrival": {
+            "time": "1772299440"
+          },
+          "departure": {
+            "time": "1772299440"
+          },
+          "stopId": "A42N"
+        },
+        {
+          "arrival": {
+            "time": "1772299590"
+          },
+          "departure": {
+            "time": "1772299590"
+          },
+          "stopId": "G36N"
+        },
+        {
+          "arrival": {
+            "time": "1772299710"
+          },
+          "departure": {
+            "time": "1772299710"
+          },
+          "stopId": "G35N"
+        },
+        {
+          "arrival": {
+            "time": "1772299770"
+          },
+          "departure": {
+            "time": "1772299770"
+          },
+          "stopId": "G34N"
+        },
+        {
+          "arrival": {
+            "time": "1772299860"
+          },
+          "departure": {
+            "time": "1772299860"
+          },
+          "stopId": "G33N"
+        }
+      ]
+    }
+  },
+  {
+    "id": "000024G",
+    "vehicle": {
+      "trip": {
+        "tripId": "072900_G..N09X002",
+        "startTime": "12:09:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "timestamp": "1772298540",
+      "stopId": "F27N"
+    }
+  },
+  {
+    "id": "000025G",
+    "trip_update": {
+      "trip": {
+        "tripId": "072900_G..S09X002",
+        "startTime": "12:09:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "stopTimeUpdate": [
+        {
+          "arrival": {
+            "time": "1772298540"
+          },
+          "departure": {
+            "time": "1772298540"
+          },
+          "stopId": "G33S"
+        },
+        {
+          "arrival": {
+            "time": "1772298630"
+          },
+          "departure": {
+            "time": "1772298630"
+          },
+          "stopId": "G34S"
+        },
+        {
+          "arrival": {
+            "time": "1772298690"
+          },
+          "departure": {
+            "time": "1772298690"
+          },
+          "stopId": "G35S"
+        },
+        {
+          "arrival": {
+            "time": "1772298810"
+          },
+          "departure": {
+            "time": "1772298810"
+          },
+          "stopId": "G36S"
+        },
+        {
+          "arrival": {
+            "time": "1772299050"
+          },
+          "departure": {
+            "time": "1772299050"
+          },
+          "stopId": "A42S"
+        },
+        {
+          "arrival": {
+            "time": "1772299290"
+          },
+          "departure": {
+            "time": "1772299290"
+          },
+          "stopId": "F20S"
+        },
+        {
+          "arrival": {
+            "time": "1772299380"
+          },
+          "departure": {
+            "time": "1772299380"
+          },
+          "stopId": "F21S"
+        },
+        {
+          "arrival": {
+            "time": "1772299470"
+          },
+          "departure": {
+            "time": "1772299470"
+          },
+          "stopId": "F22S"
+        },
+        {
+          "arrival": {
+            "time": "1772299560"
+          },
+          "departure": {
+            "time": "1772299560"
+          },
+          "stopId": "F23S"
+        },
+        {
+          "arrival": {
+            "time": "1772299650"
+          },
+          "departure": {
+            "time": "1772299650"
+          },
+          "stopId": "F24S"
+        },
+        {
+          "arrival": {
+            "time": "1772299740"
+          },
+          "departure": {
+            "time": "1772299740"
+          },
+          "stopId": "F25S"
+        },
+        {
+          "arrival": {
+            "time": "1772299890"
+          },
+          "departure": {
+            "time": "1772299890"
+          },
+          "stopId": "F26S"
+        },
+        {
+          "arrival": {
+            "time": "1772299980"
+          },
+          "departure": {
+            "time": "1772299980"
+          },
+          "stopId": "F27S"
+        }
+      ]
+    }
+  },
+  {
+    "id": "000026G",
+    "vehicle": {
+      "trip": {
+        "tripId": "072900_G..S09X002",
+        "startTime": "12:09:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "timestamp": "1772298540",
+      "stopId": "G33S"
+    }
+  },
+  {
+    "id": "000027G",
+    "trip_update": {
+      "trip": {
+        "tripId": "073900_G..S09X002",
+        "startTime": "12:19:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "stopTimeUpdate": [
+        {
+          "arrival": {
+            "time": "1772299140"
+          },
+          "departure": {
+            "time": "1772299140"
+          },
+          "stopId": "G33S"
+        },
+        {
+          "arrival": {
+            "time": "1772299230"
+          },
+          "departure": {
+            "time": "1772299230"
+          },
+          "stopId": "G34S"
+        },
+        {
+          "arrival": {
+            "time": "1772299290"
+          },
+          "departure": {
+            "time": "1772299290"
+          },
+          "stopId": "G35S"
+        },
+        {
+          "arrival": {
+            "time": "1772299410"
+          },
+          "departure": {
+            "time": "1772299410"
+          },
+          "stopId": "G36S"
+        },
+        {
+          "arrival": {
+            "time": "1772299650"
+          },
+          "departure": {
+            "time": "1772299650"
+          },
+          "stopId": "A42S"
+        },
+        {
+          "arrival": {
+            "time": "1772299890"
+          },
+          "departure": {
+            "time": "1772299890"
+          },
+          "stopId": "F20S"
+        },
+        {
+          "arrival": {
+            "time": "1772299980"
+          },
+          "departure": {
+            "time": "1772299980"
+          },
+          "stopId": "F21S"
+        },
+        {
+          "arrival": {
+            "time": "1772300070"
+          },
+          "departure": {
+            "time": "1772300070"
+          },
+          "stopId": "F22S"
+        },
+        {
+          "arrival": {
+            "time": "1772300160"
+          },
+          "departure": {
+            "time": "1772300160"
+          },
+          "stopId": "F23S"
+        },
+        {
+          "arrival": {
+            "time": "1772300250"
+          },
+          "departure": {
+            "time": "1772300250"
+          },
+          "stopId": "F24S"
+        },
+        {
+          "arrival": {
+            "time": "1772300340"
+          },
+          "departure": {
+            "time": "1772300340"
+          },
+          "stopId": "F25S"
+        },
+        {
+          "arrival": {
+            "time": "1772300490"
+          },
+          "departure": {
+            "time": "1772300490"
+          },
+          "stopId": "F26S"
+        },
+        {
+          "arrival": {
+            "time": "1772300580"
+          },
+          "departure": {
+            "time": "1772300580"
+          },
+          "stopId": "F27S"
+        }
+      ]
+    }
+  },
+  {
+    "id": "000028G",
+    "vehicle": {
+      "trip": {
+        "tripId": "073900_G..S09X002",
+        "startTime": "12:19:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "timestamp": "1772299140",
+      "stopId": "G33S"
+    }
+  },
+  {
+    "id": "000029G",
+    "trip_update": {
+      "trip": {
+        "tripId": "073700_G..N09X002",
+        "startTime": "12:17:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "stopTimeUpdate": [
+        {
+          "arrival": {
+            "time": "1772299020"
+          },
+          "departure": {
+            "time": "1772299020"
+          },
+          "stopId": "F27N"
+        },
+        {
+          "arrival": {
+            "time": "1772299110"
+          },
+          "departure": {
+            "time": "1772299110"
+          },
+          "stopId": "F26N"
+        },
+        {
+          "arrival": {
+            "time": "1772299260"
+          },
+          "departure": {
+            "time": "1772299260"
+          },
+          "stopId": "F25N"
+        },
+        {
+          "arrival": {
+            "time": "1772299350"
+          },
+          "departure": {
+            "time": "1772299350"
+          },
+          "stopId": "F24N"
+        },
+        {
+          "arrival": {
+            "time": "1772299470"
+          },
+          "departure": {
+            "time": "1772299470"
+          },
+          "stopId": "F23N"
+        },
+        {
+          "arrival": {
+            "time": "1772299560"
+          },
+          "departure": {
+            "time": "1772299560"
+          },
+          "stopId": "F22N"
+        },
+        {
+          "arrival": {
+            "time": "1772299680"
+          },
+          "departure": {
+            "time": "1772299680"
+          },
+          "stopId": "F21N"
+        },
+        {
+          "arrival": {
+            "time": "1772299770"
+          },
+          "departure": {
+            "time": "1772299770"
+          },
+          "stopId": "F20N"
+        },
+        {
+          "arrival": {
+            "time": "1772299980"
+          },
+          "departure": {
+            "time": "1772299980"
+          },
+          "stopId": "A42N"
+        },
+        {
+          "arrival": {
+            "time": "1772300190"
+          },
+          "departure": {
+            "time": "1772300190"
+          },
+          "stopId": "G36N"
+        },
+        {
+          "arrival": {
+            "time": "1772300310"
+          },
+          "departure": {
+            "time": "1772300310"
+          },
+          "stopId": "G35N"
+        },
+        {
+          "arrival": {
+            "time": "1772300370"
+          },
+          "departure": {
+            "time": "1772300370"
+          },
+          "stopId": "G34N"
+        },
+        {
+          "arrival": {
+            "time": "1772300460"
+          },
+          "departure": {
+            "time": "1772300460"
+          },
+          "stopId": "G33N"
+        }
+      ]
+    }
+  },
+  {
+    "id": "000030G",
+    "vehicle": {
+      "trip": {
+        "tripId": "073700_G..N09X002",
+        "startTime": "12:17:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "timestamp": "1772299020",
+      "stopId": "F27N"
+    }
+  },
+  {
+    "id": "000031G",
+    "trip_update": {
+      "trip": {
+        "tripId": "074700_G..N09X002",
+        "startTime": "12:27:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "stopTimeUpdate": [
+        {
+          "arrival": {
+            "time": "1772299620"
+          },
+          "departure": {
+            "time": "1772299620"
+          },
+          "stopId": "F27N"
+        },
+        {
+          "arrival": {
+            "time": "1772299710"
+          },
+          "departure": {
+            "time": "1772299710"
+          },
+          "stopId": "F26N"
+        },
+        {
+          "arrival": {
+            "time": "1772299860"
+          },
+          "departure": {
+            "time": "1772299860"
+          },
+          "stopId": "F25N"
+        },
+        {
+          "arrival": {
+            "time": "1772299950"
+          },
+          "departure": {
+            "time": "1772299950"
+          },
+          "stopId": "F24N"
+        },
+        {
+          "arrival": {
+            "time": "1772300070"
+          },
+          "departure": {
+            "time": "1772300070"
+          },
+          "stopId": "F23N"
+        },
+        {
+          "arrival": {
+            "time": "1772300160"
+          },
+          "departure": {
+            "time": "1772300160"
+          },
+          "stopId": "F22N"
+        },
+        {
+          "arrival": {
+            "time": "1772300280"
+          },
+          "departure": {
+            "time": "1772300280"
+          },
+          "stopId": "F21N"
+        },
+        {
+          "arrival": {
+            "time": "1772300370"
+          },
+          "departure": {
+            "time": "1772300370"
+          },
+          "stopId": "F20N"
+        },
+        {
+          "arrival": {
+            "time": "1772300580"
+          },
+          "departure": {
+            "time": "1772300580"
+          },
+          "stopId": "A42N"
+        },
+        {
+          "arrival": {
+            "time": "1772300790"
+          },
+          "departure": {
+            "time": "1772300790"
+          },
+          "stopId": "G36N"
+        },
+        {
+          "arrival": {
+            "time": "1772300910"
+          },
+          "departure": {
+            "time": "1772300910"
+          },
+          "stopId": "G35N"
+        },
+        {
+          "arrival": {
+            "time": "1772300970"
+          },
+          "departure": {
+            "time": "1772300970"
+          },
+          "stopId": "G34N"
+        },
+        {
+          "arrival": {
+            "time": "1772301060"
+          },
+          "departure": {
+            "time": "1772301060"
+          },
+          "stopId": "G33N"
+        }
+      ]
+    }
+  },
+  {
+    "id": "000032G",
+    "vehicle": {
+      "trip": {
+        "tripId": "074700_G..N09X002",
+        "startTime": "12:27:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "timestamp": "1772299620",
+      "stopId": "F27N"
+    }
+  },
+  {
+    "id": "000033G",
+    "trip_update": {
+      "trip": {
+        "tripId": "074900_G..S09X002",
+        "startTime": "12:29:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "stopTimeUpdate": [
+        {
+          "arrival": {
+            "time": "1772299740"
+          },
+          "departure": {
+            "time": "1772299740"
+          },
+          "stopId": "G33S"
+        },
+        {
+          "arrival": {
+            "time": "1772299830"
+          },
+          "departure": {
+            "time": "1772299830"
+          },
+          "stopId": "G34S"
+        },
+        {
+          "arrival": {
+            "time": "1772299890"
+          },
+          "departure": {
+            "time": "1772299890"
+          },
+          "stopId": "G35S"
+        },
+        {
+          "arrival": {
+            "time": "1772300010"
+          },
+          "departure": {
+            "time": "1772300010"
+          },
+          "stopId": "G36S"
+        },
+        {
+          "arrival": {
+            "time": "1772300235"
+          },
+          "departure": {
+            "time": "1772300235"
+          },
+          "stopId": "A42S"
+        },
+        {
+          "arrival": {
+            "time": "1772300460"
+          },
+          "departure": {
+            "time": "1772300460"
+          },
+          "stopId": "F20S"
+        },
+        {
+          "arrival": {
+            "time": "1772300550"
+          },
+          "departure": {
+            "time": "1772300550"
+          },
+          "stopId": "F21S"
+        },
+        {
+          "arrival": {
+            "time": "1772300640"
+          },
+          "departure": {
+            "time": "1772300640"
+          },
+          "stopId": "F22S"
+        },
+        {
+          "arrival": {
+            "time": "1772300730"
+          },
+          "departure": {
+            "time": "1772300730"
+          },
+          "stopId": "F23S"
+        },
+        {
+          "arrival": {
+            "time": "1772300820"
+          },
+          "departure": {
+            "time": "1772300820"
+          },
+          "stopId": "F24S"
+        },
+        {
+          "arrival": {
+            "time": "1772300910"
+          },
+          "departure": {
+            "time": "1772300910"
+          },
+          "stopId": "F25S"
+        },
+        {
+          "arrival": {
+            "time": "1772301060"
+          },
+          "departure": {
+            "time": "1772301060"
+          },
+          "stopId": "F26S"
+        },
+        {
+          "arrival": {
+            "time": "1772301150"
+          },
+          "departure": {
+            "time": "1772301150"
+          },
+          "stopId": "F27S"
+        }
+      ]
+    }
+  },
+  {
+    "id": "000034G",
+    "vehicle": {
+      "trip": {
+        "tripId": "074900_G..S09X002",
+        "startTime": "12:29:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "timestamp": "1772299740",
+      "stopId": "G33S"
+    }
+  },
+  {
+    "id": "000035G",
+    "trip_update": {
+      "trip": {
+        "tripId": "075700_G..N09X002",
+        "startTime": "12:37:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "stopTimeUpdate": [
+        {
+          "arrival": {
+            "time": "1772300220"
+          },
+          "departure": {
+            "time": "1772300220"
+          },
+          "stopId": "F27N"
+        },
+        {
+          "arrival": {
+            "time": "1772300310"
+          },
+          "departure": {
+            "time": "1772300310"
+          },
+          "stopId": "F26N"
+        },
+        {
+          "arrival": {
+            "time": "1772300460"
+          },
+          "departure": {
+            "time": "1772300460"
+          },
+          "stopId": "F25N"
+        },
+        {
+          "arrival": {
+            "time": "1772300550"
+          },
+          "departure": {
+            "time": "1772300550"
+          },
+          "stopId": "F24N"
+        },
+        {
+          "arrival": {
+            "time": "1772300670"
+          },
+          "departure": {
+            "time": "1772300670"
+          },
+          "stopId": "F23N"
+        },
+        {
+          "arrival": {
+            "time": "1772300760"
+          },
+          "departure": {
+            "time": "1772300760"
+          },
+          "stopId": "F22N"
+        },
+        {
+          "arrival": {
+            "time": "1772300880"
+          },
+          "departure": {
+            "time": "1772300880"
+          },
+          "stopId": "F21N"
+        },
+        {
+          "arrival": {
+            "time": "1772300970"
+          },
+          "departure": {
+            "time": "1772300970"
+          },
+          "stopId": "F20N"
+        },
+        {
+          "arrival": {
+            "time": "1772301180"
+          },
+          "departure": {
+            "time": "1772301180"
+          },
+          "stopId": "A42N"
+        },
+        {
+          "arrival": {
+            "time": "1772301390"
+          },
+          "departure": {
+            "time": "1772301390"
+          },
+          "stopId": "G36N"
+        },
+        {
+          "arrival": {
+            "time": "1772301510"
+          },
+          "departure": {
+            "time": "1772301510"
+          },
+          "stopId": "G35N"
+        },
+        {
+          "arrival": {
+            "time": "1772301570"
+          },
+          "departure": {
+            "time": "1772301570"
+          },
+          "stopId": "G34N"
+        },
+        {
+          "arrival": {
+            "time": "1772301660"
+          },
+          "departure": {
+            "time": "1772301660"
+          },
+          "stopId": "G33N"
+        }
+      ]
+    }
+  },
+  {
+    "id": "000036G",
+    "vehicle": {
+      "trip": {
+        "tripId": "075700_G..N09X002",
+        "startTime": "12:37:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "timestamp": "1772300220",
+      "stopId": "F27N"
+    }
+  },
+  {
+    "id": "000037G",
+    "trip_update": {
+      "trip": {
+        "tripId": "075900_G..S09X002",
+        "startTime": "12:39:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "stopTimeUpdate": [
+        {
+          "arrival": {
+            "time": "1772300340"
+          },
+          "departure": {
+            "time": "1772300340"
+          },
+          "stopId": "G33S"
+        },
+        {
+          "arrival": {
+            "time": "1772300430"
+          },
+          "departure": {
+            "time": "1772300430"
+          },
+          "stopId": "G34S"
+        },
+        {
+          "arrival": {
+            "time": "1772300490"
+          },
+          "departure": {
+            "time": "1772300490"
+          },
+          "stopId": "G35S"
+        },
+        {
+          "arrival": {
+            "time": "1772300610"
+          },
+          "departure": {
+            "time": "1772300610"
+          },
+          "stopId": "G36S"
+        },
+        {
+          "arrival": {
+            "time": "1772300835"
+          },
+          "departure": {
+            "time": "1772300835"
+          },
+          "stopId": "A42S"
+        },
+        {
+          "arrival": {
+            "time": "1772301060"
+          },
+          "departure": {
+            "time": "1772301060"
+          },
+          "stopId": "F20S"
+        },
+        {
+          "arrival": {
+            "time": "1772301150"
+          },
+          "departure": {
+            "time": "1772301150"
+          },
+          "stopId": "F21S"
+        },
+        {
+          "arrival": {
+            "time": "1772301240"
+          },
+          "departure": {
+            "time": "1772301240"
+          },
+          "stopId": "F22S"
+        },
+        {
+          "arrival": {
+            "time": "1772301330"
+          },
+          "departure": {
+            "time": "1772301330"
+          },
+          "stopId": "F23S"
+        },
+        {
+          "arrival": {
+            "time": "1772301420"
+          },
+          "departure": {
+            "time": "1772301420"
+          },
+          "stopId": "F24S"
+        },
+        {
+          "arrival": {
+            "time": "1772301510"
+          },
+          "departure": {
+            "time": "1772301510"
+          },
+          "stopId": "F25S"
+        },
+        {
+          "arrival": {
+            "time": "1772301660"
+          },
+          "departure": {
+            "time": "1772301660"
+          },
+          "stopId": "F26S"
+        },
+        {
+          "arrival": {
+            "time": "1772301750"
+          },
+          "departure": {
+            "time": "1772301750"
+          },
+          "stopId": "F27S"
+        }
+      ]
+    }
+  },
+  {
+    "id": "000038G",
+    "vehicle": {
+      "trip": {
+        "tripId": "075900_G..S09X002",
+        "startTime": "12:39:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "timestamp": "1772300340",
+      "stopId": "G33S"
+    }
+  },
+  {
+    "id": "000039G",
+    "trip_update": {
+      "trip": {
+        "tripId": "076700_G..N09X002",
+        "startTime": "12:47:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "stopTimeUpdate": [
+        {
+          "arrival": {
+            "time": "1772300820"
+          },
+          "departure": {
+            "time": "1772300820"
+          },
+          "stopId": "F27N"
+        },
+        {
+          "arrival": {
+            "time": "1772300910"
+          },
+          "departure": {
+            "time": "1772300910"
+          },
+          "stopId": "F26N"
+        },
+        {
+          "arrival": {
+            "time": "1772301060"
+          },
+          "departure": {
+            "time": "1772301060"
+          },
+          "stopId": "F25N"
+        },
+        {
+          "arrival": {
+            "time": "1772301150"
+          },
+          "departure": {
+            "time": "1772301150"
+          },
+          "stopId": "F24N"
+        },
+        {
+          "arrival": {
+            "time": "1772301270"
+          },
+          "departure": {
+            "time": "1772301270"
+          },
+          "stopId": "F23N"
+        },
+        {
+          "arrival": {
+            "time": "1772301360"
+          },
+          "departure": {
+            "time": "1772301360"
+          },
+          "stopId": "F22N"
+        },
+        {
+          "arrival": {
+            "time": "1772301480"
+          },
+          "departure": {
+            "time": "1772301480"
+          },
+          "stopId": "F21N"
+        },
+        {
+          "arrival": {
+            "time": "1772301570"
+          },
+          "departure": {
+            "time": "1772301570"
+          },
+          "stopId": "F20N"
+        },
+        {
+          "arrival": {
+            "time": "1772301780"
+          },
+          "departure": {
+            "time": "1772301780"
+          },
+          "stopId": "A42N"
+        },
+        {
+          "arrival": {
+            "time": "1772301990"
+          },
+          "departure": {
+            "time": "1772301990"
+          },
+          "stopId": "G36N"
+        },
+        {
+          "arrival": {
+            "time": "1772302110"
+          },
+          "departure": {
+            "time": "1772302110"
+          },
+          "stopId": "G35N"
+        },
+        {
+          "arrival": {
+            "time": "1772302170"
+          },
+          "departure": {
+            "time": "1772302170"
+          },
+          "stopId": "G34N"
+        },
+        {
+          "arrival": {
+            "time": "1772302260"
+          },
+          "departure": {
+            "time": "1772302260"
+          },
+          "stopId": "G33N"
+        }
+      ]
+    }
+  },
+  {
+    "id": "000040G",
+    "vehicle": {
+      "trip": {
+        "tripId": "076700_G..N09X002",
+        "startTime": "12:47:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "timestamp": "1772300820",
+      "stopId": "F27N"
+    }
+  },
+  {
+    "id": "000041G",
+    "trip_update": {
+      "trip": {
+        "tripId": "076900_G..S09X002",
+        "startTime": "12:49:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "stopTimeUpdate": [
+        {
+          "arrival": {
+            "time": "1772300940"
+          },
+          "departure": {
+            "time": "1772300940"
+          },
+          "stopId": "G33S"
+        },
+        {
+          "arrival": {
+            "time": "1772301030"
+          },
+          "departure": {
+            "time": "1772301030"
+          },
+          "stopId": "G34S"
+        },
+        {
+          "arrival": {
+            "time": "1772301090"
+          },
+          "departure": {
+            "time": "1772301090"
+          },
+          "stopId": "G35S"
+        },
+        {
+          "arrival": {
+            "time": "1772301210"
+          },
+          "departure": {
+            "time": "1772301210"
+          },
+          "stopId": "G36S"
+        },
+        {
+          "arrival": {
+            "time": "1772301435"
+          },
+          "departure": {
+            "time": "1772301435"
+          },
+          "stopId": "A42S"
+        },
+        {
+          "arrival": {
+            "time": "1772301660"
+          },
+          "departure": {
+            "time": "1772301660"
+          },
+          "stopId": "F20S"
+        },
+        {
+          "arrival": {
+            "time": "1772301750"
+          },
+          "departure": {
+            "time": "1772301750"
+          },
+          "stopId": "F21S"
+        },
+        {
+          "arrival": {
+            "time": "1772301840"
+          },
+          "departure": {
+            "time": "1772301840"
+          },
+          "stopId": "F22S"
+        },
+        {
+          "arrival": {
+            "time": "1772301930"
+          },
+          "departure": {
+            "time": "1772301930"
+          },
+          "stopId": "F23S"
+        },
+        {
+          "arrival": {
+            "time": "1772302020"
+          },
+          "departure": {
+            "time": "1772302020"
+          },
+          "stopId": "F24S"
+        },
+        {
+          "arrival": {
+            "time": "1772302110"
+          },
+          "departure": {
+            "time": "1772302110"
+          },
+          "stopId": "F25S"
+        },
+        {
+          "arrival": {
+            "time": "1772302260"
+          },
+          "departure": {
+            "time": "1772302260"
+          },
+          "stopId": "F26S"
+        },
+        {
+          "arrival": {
+            "time": "1772302350"
+          },
+          "departure": {
+            "time": "1772302350"
+          },
+          "stopId": "F27S"
+        }
+      ]
+    }
+  },
+  {
+    "id": "000042G",
+    "vehicle": {
+      "trip": {
+        "tripId": "076900_G..S09X002",
+        "startTime": "12:49:00",
+        "startDate": "20260228",
+        "routeId": "G"
+      },
+      "timestamp": "1772300940",
+      "stopId": "G33S"
+    }
+  }
+]
