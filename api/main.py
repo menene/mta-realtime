@@ -101,8 +101,13 @@ class Vehicle(BaseModel):
 
 class FeedEntity(BaseModel):
     id: str
-    trip_update: Optional[TripUpdate] = None
+    tripUpdate: Optional[TripUpdate] = None
     vehicle: Optional[Vehicle] = None
+
+
+class FeedMessage(BaseModel):
+    header: Optional[dict] = None
+    entity: List[FeedEntity] = []
 
 
 # ── endpoints ────────────────────────────────────────────────────────────────
@@ -121,7 +126,8 @@ async def parse(request: Request):
 
 
 @app.post("/save")
-async def save(entities: List[FeedEntity]):
+async def save(feed: FeedMessage):
+    entities = feed.entity
     vehicle_count = 0
     time_update_count = 0
 
@@ -157,8 +163,8 @@ async def save(entities: List[FeedEntity]):
                 vehicle_count += cur.rowcount  # 1 if inserted, 0 if skipped
 
             # ── time updates (trip updates) ───────────────────────────
-            if entity.trip_update and entity.trip_update.stopTimeUpdate:
-                tu = entity.trip_update
+            if entity.tripUpdate and entity.tripUpdate.stopTimeUpdate:
+                tu = entity.tripUpdate
                 route_id = _resolve_route(cur, tu.trip.routeId)
                 trip_id = _resolve_trip(cur, tu.trip.tripId)
                 direction = _direction_from_trip_id(tu.trip.tripId)
