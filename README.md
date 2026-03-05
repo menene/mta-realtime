@@ -2,9 +2,7 @@
 
 Alejandra Alvarado | Rudy Osorio | Erick Marroquin
 
-Big Data 2
-
----
+## Proyecto final - Big Data 2
 
 Pipeline de datos en tiempo real que ingesta, parsea, almacena y visualiza la informacion del subway de Nueva York usando los feeds GTFS-Realtime de la MTA.
 
