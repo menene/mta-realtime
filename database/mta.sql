@@ -169,3 +169,99 @@ CREATE INDEX IF NOT EXISTS idx_tu_route     ON time_updates (route_id);
 CREATE INDEX IF NOT EXISTS idx_tu_stop      ON time_updates (stop_id);
 CREATE INDEX IF NOT EXISTS idx_tu_arrival   ON time_updates (arrival_time);
 CREATE INDEX IF NOT EXISTS idx_tu_recorded  ON time_updates (recorded_at);
+
+
+-- ═══════════════════════════════════════════════════════════════════════════════
+--  Gold-Tier Views — Enriched data for visualization & delay detection
+-- ═══════════════════════════════════════════════════════════════════════════════
+
+-- v_gold_vehicle_positions: enriched snapshot of where trains are
+CREATE OR REPLACE VIEW v_gold_vehicle_positions AS
+SELECT
+    vp.id,
+    vp.recorded_at,
+    TO_TIMESTAMP(vp.timestamp)          AS timestamp,
+    r.name                              AS route,
+    r.route_color,
+    r.text_color,
+    t.name                              AS trip_name,
+    s.name                              AS stop_code,
+    s.stop_name,
+    s.stop_lat,
+    s.stop_lon,
+    ts.name                             AS train_status,
+    CASE vp.direction_id
+        WHEN 0 THEN 'N'
+        WHEN 1 THEN 'S'
+    END                                 AS direction,
+    vp.current_stop_sequence,
+    vp.start_time,
+    vp.start_date
+FROM vehicle_positions vp
+INNER JOIN routes         r  ON r.id  = vp.route_id
+INNER JOIN trips          t  ON t.id  = vp.trip_id
+INNER JOIN stops          s  ON s.id  = vp.stop_id
+INNER JOIN train_statuses ts ON ts.id = vp.status_id;
+
+
+-- v_gold_time_updates: delay analysis — predicted vs. scheduled arrival
+CREATE OR REPLACE VIEW v_gold_time_updates AS
+SELECT
+    tu.id,
+    tu.recorded_at,
+    r.name                              AS route,
+    r.route_color,
+    r.text_color,
+    t.name                              AS trip_name,
+    s.name                              AS stop_code,
+    s.stop_name,
+    s.stop_lat,
+    s.stop_lon,
+    CASE tu.direction_id
+        WHEN 0 THEN 'N'
+        WHEN 1 THEN 'S'
+    END                                 AS direction,
+    CASE EXTRACT(DOW FROM TO_DATE(tu.start_date, 'YYYYMMDD'))
+        WHEN 0 THEN 'Sunday'
+        WHEN 6 THEN 'Saturday'
+        ELSE        'Weekday'
+    END                                 AS service_day,
+    TO_TIMESTAMP(tu.arrival_time)       AS predicted_arrival,
+    TO_TIMESTAMP(tu.departure_time)     AS predicted_departure,
+    sched.scheduled_arrival,
+    EXTRACT(EPOCH FROM (
+        TO_TIMESTAMP(tu.arrival_time)
+        - (TO_DATE(tu.start_date, 'YYYYMMDD') + sched.scheduled_arrival::INTERVAL)
+    ))::INTEGER                         AS delay_seconds,
+    CASE
+        WHEN EXTRACT(EPOCH FROM (
+            TO_TIMESTAMP(tu.arrival_time)
+            - (TO_DATE(tu.start_date, 'YYYYMMDD') + sched.scheduled_arrival::INTERVAL)
+        )) > 300 THEN 'DELAYED'
+        ELSE 'ON_TIME'
+    END                                 AS trip_status
+FROM time_updates tu
+INNER JOIN routes r ON r.id = tu.route_id
+INNER JOIN trips  t ON t.id = tu.trip_id
+INNER JOIN stops  s ON s.id = tu.stop_id
+LEFT JOIN LATERAL (
+    SELECT st.arrival_time AS scheduled_arrival
+    FROM stop_times st
+    INNER JOIN scheduled_trips strp ON strp.trip_id = st.trip_id
+    INNER JOIN calendar       cal  ON cal.service_id = strp.service_id
+    WHERE st.stop_id       = s.name
+      AND strp.route_id    = r.name
+      AND strp.direction_id = tu.direction_id
+      AND (
+          (EXTRACT(DOW FROM TO_DATE(tu.start_date, 'YYYYMMDD')) BETWEEN 1 AND 5 AND cal.monday = 1)
+       OR (EXTRACT(DOW FROM TO_DATE(tu.start_date, 'YYYYMMDD')) = 6 AND cal.saturday = 1)
+       OR (EXTRACT(DOW FROM TO_DATE(tu.start_date, 'YYYYMMDD')) = 0 AND cal.sunday = 1)
+      )
+    ORDER BY ABS(
+        EXTRACT(EPOCH FROM (st.arrival_time::INTERVAL))
+        - EXTRACT(EPOCH FROM (
+            TO_TIMESTAMP(tu.arrival_time) - TO_DATE(tu.start_date, 'YYYYMMDD')
+          ))
+    )
+    LIMIT 1
+) sched ON TRUE;

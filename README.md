@@ -1,6 +1,6 @@
 # MTA Subway Realtime - Real Time Pipeline
 
-Alejandra Alvarado | Rudy Osorio | Erick Marroquín
+Alejandra Alvarado | Rudy Osorio | Erick Marroquin
 
 Big Data 2
 
@@ -15,52 +15,70 @@ Construir una plataforma de datos que:
 1. **Ingeste** los feeds GTFS-RT (protobuf) de la MTA en tiempo real
 2. **Parsee** el protobuf a JSON estructurado
 3. **Almacene** posiciones de trenes y predicciones de llegada en PostgreSQL
-4. **Visualice** los datos mediante dashboards interactivos en Superset
+4. **Enriquezca** los datos con schedules estaticos GTFS para deteccion de delays
+5. **Visualice** los datos mediante dashboards interactivos en Superset
 
 ## Arquitectura
 
 ![Arquitectura](docs/arquitectura.png)
 
-### Flujo de Datos
-
-![Flujo de datos](docs/flujo-datos.png)
+NiFi orquesta todo el flujo: cada 30 segundos hace fetch del feed GTFS-RT de la MTA, lo envia a FastAPI para parsearlo de protobuf a JSON, y luego lo envia de vuelta a FastAPI para persistirlo en PostgreSQL. Superset consulta las vistas gold directamente para los dashboards.
 
 ## Servicios
 
 | Servicio       | Contenedor       | Puerto  | Descripcion                                                |
 |----------------|------------------|---------|------------------------------------------------------------|
-| **PostgreSQL** | `mta-postgres`   | `5433`  | Almacena datos de la MTA y metadatos de Superset           |
-| **FastAPI**    | `mta-api`        | `8000`  | Parsea protobuf GTFS-RT a JSON                             |
+| **PostgreSQL** | `mta-postgres`   | `5432`  | Almacena datos de la MTA y metadatos de Superset           |
+| **FastAPI**    | `mta-api`        | `8000`  | Parsea protobuf GTFS-RT a JSON y guarda a la base de datos |
 | **NiFi**       | `mta-nifi`       | `8080`  | Orquesta la ingesta: fetch, parse y carga a la base        |
 | **Superset**   | `mta-superset`   | `8190`  | Dashboards y visualizacion de datos                        |
 
-### Red
-
 Todos los servicios comparten la red Docker `mta` (bridge), lo que permite la comunicacion interna por nombre de contenedor.
 
-## Modelo de Datos
+## Flujo de Datos
 
-![Modelo de datos](docs/modelo-datos.png)
+![Flujo de Datos](docs/flujo-datos.png)
 
-**Tablas de dimension:** `routes`, `stops`, `trips`, `train_statuses`
-**Tablas de hechos:** `vehicle_positions`, `time_updates`
+## Modelo de Datos — Arquitectura Medallion
+
+El modelo sigue una **arquitectura medallion** con tres capas: Bronze para datos crudos, Silver para datos de referencia, y Gold para vistas enriquecidas listas para consumo.
+
+![Modelo de Datos](docs/modelo-datos.png)
+
+### Bronze — Datos Crudos y Dimensiones
+
+Datos en tiempo real tal como llegan del feed de la MTA. Incluye tablas de dimension (`routes`, `stops`, `trips`, `train_statuses`) y tablas de hechos (`vehicle_positions`, `time_updates`) con deduplicacion automatica.
+
+### Silver — Schedule GTFS Estatico
+
+Horarios oficiales del subway cargados una sola vez desde los archivos GTFS estaticos. Incluye `calendar`, `calendar_dates`, `scheduled_trips` y `stop_times`.
+
+### Gold — Vistas Enriquecidas
+
+Vistas SQL que combinan datos realtime con los schedules estaticos:
+
+- **`v_gold_vehicle_positions`** — Posiciones de trenes enriquecidas con nombre de ruta, color, estacion y coordenadas. Lista para visualizar en un mapa.
+- **`v_gold_time_updates`** — Compara las predicciones de llegada en tiempo real contra el horario programado para detectar delays. Si un tren tiene mas de 5 minutos de retraso se marca como `DELAYED`, esta es una métrica del MTA que considera un tren retrasado si se pasa de 300 segundos (5 minutos) de la hora calendarizada.
 
 ## Estructura del Proyecto
 
 ```
 mta-nifi/
 ├── api/
-│   ├── main.py                  # App FastAPI (endpoints /health y /parse)
+│   ├── main.py                  # App FastAPI (endpoints /health, /parse, /save)
 │   └── requirements.txt         # Dependencias Python
 ├── database/
-│   ├── mta.sql                  # DDL: tablas, indices, constraints
-│   ├── seed.sql                 # Datos iniciales (rutas, estados)
-│   └── mta_g_feed.json         # Ejemplo de feed GTFS-RT convertido a JSON
+│   ├── mta.sql                  # DDL: tablas, indices, constraints, vistas gold
+│   ├── seed.sql                 # Datos iniciales (rutas, estados, calendario)
+│   ├── seed_gtfs.sql            # Datos GTFS estaticos (scheduled_trips, stop_times)
+│   ├── gtfs/                    # Archivos fuente GTFS (routes, stops, trips, etc.)
+│   └── mta_g_feed.json          # Ejemplo de feed GTFS-RT convertido a JSON
 ├── dockerfiles/
 │   ├── api/
 │   │   └── Dockerfile           # Imagen Python 3.11-slim + uvicorn
 │   ├── nifi/
-│   │   └── Dockerfile           # NiFi 1.23.2 + driver JDBC PostgreSQL
+│   │   ├── Dockerfile           # NiFi 1.23.2 + driver JDBC PostgreSQL
+│   │   └── set-proxy-host.sh    # Script de configuracion de proxy
 │   ├── postgres/
 │   │   ├── Dockerfile           # PostgreSQL 15-alpine
 │   │   └── init/
@@ -69,6 +87,10 @@ mta-nifi/
 │       ├── Dockerfile           # Superset 3.1.3 + psycopg2
 │       ├── docker-entrypoint.sh # Bootstrap: migrations, admin, datasource
 │       └── superset_config.py   # Configuracion de Superset
+├── docs/
+│   ├── arquitectura.mmd         # Diagrama de arquitectura (Mermaid)
+│   ├── flujo-datos.mmd          # Diagrama de flujo de datos (Mermaid)
+│   └── modelo-datos.mmd         # Diagrama ER del modelo de datos (Mermaid)
 ├── .env                         # Variables de entorno (no versionado)
 ├── .env.example                 # Plantilla de variables de entorno
 ├── docker-compose.yml           # Orquestacion de todos los servicios (no versionado)
@@ -111,7 +133,15 @@ open http://localhost:8080/nifi/
 open http://localhost:8190
 ```
 
-### 4. Probar el endpoint de parseo
+## API — FastAPI
+
+| Metodo | Ruta      | Content-Type               | Descripcion                                     |
+|--------|-----------|----------------------------|--------------------------------------------------|
+| GET    | `/health` | —                          | Healthcheck, retorna `{"status": "ok"}`          |
+| POST   | `/parse`  | `application/octet-stream` | Recibe protobuf GTFS-RT, retorna JSON            |
+| POST   | `/save`   | `application/json`         | Recibe JSON parseado, guarda en PostgreSQL       |
+
+### Ejemplo: parsear un feed
 
 ```bash
 curl -X POST http://localhost:8000/parse \
@@ -119,12 +149,25 @@ curl -X POST http://localhost:8000/parse \
   --data-binary @feed.pb
 ```
 
-## API — FastAPI Parser
+### Ejemplo: guardar a la base de datos
 
-| Metodo | Ruta      | Content-Type               | Descripcion                        |
-|--------|-----------|----------------------------|------------------------------------|
-| GET    | `/health` | —                          | Healthcheck, retorna `{"status": "ok"}` |
-| POST   | `/parse`  | `application/octet-stream` | Recibe protobuf GTFS-RT, retorna JSON  |
+El endpoint `/save` recibe el JSON generado por `/parse` y lo persiste en las tablas `vehicle_positions` y `time_updates`. NiFi orquesta este flujo automaticamente.
+
+## Consultas Visualización
+
+Una vez que hay datos en la base, las vistas gold estan disponibles para consulta directa:
+
+```sql
+-- Posiciones de trenes enriquecidas
+SELECT * FROM v_gold_vehicle_positions LIMIT 20;
+
+-- Delays: prediccion vs. schedule
+SELECT route, stop_name, direction, delay_seconds, trip_status
+FROM v_gold_time_updates
+WHERE trip_status = 'DELAYED'
+ORDER BY delay_seconds DESC
+LIMIT 20;
+```
 
 ## Credenciales por Defecto
 
@@ -149,11 +192,16 @@ El flag `-v` elimina todos los volumenes (datos de PostgreSQL, configuracion de 
 
 - [MTA Realtime Data Feeds](https://api.mta.info/) — API de datos en tiempo real del subway de Nueva York
 - [GTFS Realtime Reference](https://gtfs.org/documentation/realtime/reference/) — Especificacion del formato GTFS-RT (protobuf)
-- [gtfs-realtime-bindings (Python)](https://github.com/MobilityData/gtfs-realtime-bindings/tree/master/python) — Bindings de protobuf para GTFS-RT
+- [GTFS Static Reference](https://gtfs.org/documentation/schedule/reference/) — Especificacion del formato GTFS estatico (schedules, stops, calendar)
+- [gtfs-realtime-bindings (Python)](https://github.com/MobilityData/gtfs-realtime-bindings/tree/master/python) — Bindings de protobuf para GTFS-RT en Python
 - [Protocol Buffers](https://protobuf.dev/) — Formato de serializacion binaria de Google
 - [FastAPI](https://fastapi.tiangolo.com/) — Framework web async para Python
+- [Pydantic](https://docs.pydantic.dev/) — Validacion de datos y serializacion para Python
 - [Uvicorn](https://www.uvicorn.org/) — Servidor ASGI para Python
+- [psycopg2](https://www.psycopg.org/docs/) — Adaptador PostgreSQL para Python
 - [Apache NiFi](https://nifi.apache.org/docs.html) — Plataforma de integracion y automatizacion de flujos de datos
 - [PostgreSQL 15](https://www.postgresql.org/docs/15/) — Base de datos relacional
 - [Apache Superset](https://superset.apache.org/docs/intro) — Plataforma de visualizacion y BI
 - [Docker Compose](https://docs.docker.com/compose/) — Orquestacion de contenedores multi-servicio
+- [Mermaid](https://mermaid.js.org/) — Diagramas como codigo, usados para la documentacion del proyecto
+- [Medallion Architecture](https://www.databricks.com/glossary/medallion-architecture) — Patron de arquitectura de datos Bronze/Silver/Gold

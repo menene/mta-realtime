@@ -1,0 +1,111 @@
+erDiagram
+    %% ── Bronze: Dimension Tables ──
+    routes {
+        serial id PK
+        varchar name UK
+        varchar long_name
+        text description
+        smallint route_type
+        varchar route_color
+        varchar text_color
+        integer sort_order
+    }
+
+    stops {
+        serial id PK
+        varchar name UK
+        varchar stop_name
+        numeric stop_lat
+        numeric stop_lon
+        smallint location_type
+        varchar parent_station
+    }
+
+    trips {
+        serial id PK
+        varchar name UK
+    }
+
+    train_statuses {
+        serial id PK
+        varchar name UK
+    }
+
+    %% ── Bronze: Fact Tables (Realtime) ──
+    vehicle_positions {
+        bigserial id PK
+        integer route_id FK
+        integer trip_id FK
+        integer stop_id FK
+        integer status_id FK
+        integer current_stop_sequence
+        varchar start_time
+        varchar start_date
+        smallint direction_id
+        bigint timestamp
+        timestamptz recorded_at
+    }
+
+    time_updates {
+        bigserial id PK
+        integer route_id FK
+        integer trip_id FK
+        integer stop_id FK
+        varchar start_time
+        varchar start_date
+        smallint direction_id
+        bigint arrival_time
+        bigint departure_time
+        timestamptz recorded_at
+    }
+
+    %% ── Silver: GTFS Static Schedule ──
+    calendar {
+        varchar service_id PK
+        smallint monday
+        smallint tuesday
+        smallint wednesday
+        smallint thursday
+        smallint friday
+        smallint saturday
+        smallint sunday
+        varchar start_date
+        varchar end_date
+    }
+
+    calendar_dates {
+        varchar service_id FK
+        varchar date
+        smallint exception_type
+    }
+
+    scheduled_trips {
+        varchar trip_id PK
+        varchar route_id
+        varchar service_id FK
+        varchar trip_headsign
+        smallint direction_id
+        varchar shape_id
+    }
+
+    stop_times {
+        varchar trip_id FK
+        varchar stop_id
+        varchar arrival_time
+        varchar departure_time
+        integer stop_sequence
+    }
+
+    %% ── Relationships ──
+    routes ||--o{ vehicle_positions : "route_id"
+    trips ||--o{ vehicle_positions : "trip_id"
+    stops ||--o{ vehicle_positions : "stop_id"
+    train_statuses ||--o{ vehicle_positions : "status_id"
+
+    routes ||--o{ time_updates : "route_id"
+    trips ||--o{ time_updates : "trip_id"
+    stops ||--o{ time_updates : "stop_id"
+
+    calendar ||--o{ calendar_dates : "service_id"
+    calendar ||--o{ scheduled_trips : "service_id"
+    scheduled_trips ||--o{ stop_times : "trip_id"

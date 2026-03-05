@@ -1,0 +1,15 @@
+graph LR
+    MTA["MTA API"] -- "protobuf" --> NiFi1["NiFi (fetch)"]
+    NiFi1 -- "protobuf" --> API1["FastAPI (parse)"]
+    API1 -- "JSON" --> NiFi2["NiFi (route)"]
+    NiFi2 -- "JSON" --> API2["FastAPI (save)"]
+    API2 -- "SQL INSERT" --> PG["PostgreSQL"]
+    PG -- "SQL SELECT" --> SS["Superset"]
+
+    style MTA fill:#4cd964,stroke:#4cd964,color:#fff
+    style NiFi1 fill:#4a90d9,stroke:#4a90d9,color:#fff
+    style API1 fill:#f5a623,stroke:#f5a623,color:#fff
+    style NiFi2 fill:#4a90d9,stroke:#4a90d9,color:#fff
+    style API2 fill:#f5a623,stroke:#f5a623,color:#fff
+    style PG fill:#4a7b9d,stroke:#4a7b9d,color:#fff
+    style SS fill:#e74c3c,stroke:#e74c3c,color:#fff

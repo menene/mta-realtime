@@ -1,0 +1,19 @@
+graph TD
+    MTA["MTA API<br>(GTFS)"]
+    NiFi["Apache NiFi<br>:8080"]
+    API["FastAPI Parser<br>:8000"]
+    PG["PostgreSQL<br>:5432"]
+    SS["Superset<br>:8088"]
+
+    MTA -- "HTTPS<br>(GTFS)" --> NiFi
+    NiFi -- "POST /parse<br>(GTFS)" --> API
+    API -- "Response<br>(JSON)" --> NiFi
+    NiFi -- "POST /save<br>(JSON)" --> API
+    API -- "INSERT SQL" --> PG
+    SS -- "SQLAlchemy<br>(SELECT)" --> PG
+
+    style MTA fill:#4a90d9,stroke:#4a90d9,color:#fff
+    style NiFi fill:#f5a623,stroke:#f5a623,color:#fff
+    style API fill:#4cd964,stroke:#4cd964,color:#fff
+    style PG fill:#4a7b9d,stroke:#4a7b9d,color:#fff
+    style SS fill:#e74c3c,stroke:#e74c3c,color:#fff
