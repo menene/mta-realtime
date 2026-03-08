@@ -5,7 +5,8 @@ from pathlib import Path
 from typing import Any, List, Optional
 
 import psycopg2
-from fastapi import FastAPI, Request
+import requests as http_requests
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from google.protobuf.json_format import MessageToDict
@@ -16,6 +17,40 @@ from pydantic import BaseModel, model_validator
 logger = logging.getLogger("mta")
 
 app = FastAPI()
+
+# ── NiFi proxy configuration ─────────────────────────────────────────────────
+
+NIFI_HOST = os.getenv("NIFI_HOST", "http://nifi:8080")
+NIFI_USERNAME = os.getenv("NIFI_USERNAME", "admin")
+NIFI_PASSWORD = os.getenv("NIFI_PASSWORD", "adminpassword123")
+
+
+def _nifi_token() -> str:
+    """Obtain a NiFi access token via username/password."""
+    resp = http_requests.post(
+        f"{NIFI_HOST}/nifi-api/access/token",
+        data={"username": NIFI_USERNAME, "password": NIFI_PASSWORD},
+        timeout=10,
+    )
+    resp.raise_for_status()
+    return resp.text
+
+
+def _nifi_headers() -> dict:
+    token = _nifi_token()
+    return {"Authorization": f"Bearer {token}"}
+
+
+def _root_process_group_id() -> str:
+    """Get the root process group ID from NiFi."""
+    headers = _nifi_headers()
+    resp = http_requests.get(
+        f"{NIFI_HOST}/nifi-api/flow/process-groups/root",
+        headers=headers,
+        timeout=10,
+    )
+    resp.raise_for_status()
+    return resp.json()["processGroupFlow"]["id"]
 
 # ── docs / static files ──────────────────────────────────────────────────────
 
@@ -166,6 +201,80 @@ def docs_page():
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+
+# ── NiFi control endpoints ───────────────────────────────────────────────────
+
+@app.get("/nifi/status")
+def nifi_status():
+    """Return the current NiFi root process group flow state."""
+    try:
+        headers = _nifi_headers()
+        pg_id = _root_process_group_id()
+        resp = http_requests.get(
+            f"{NIFI_HOST}/nifi-api/flow/process-groups/{pg_id}/status",
+            headers=headers,
+            timeout=10,
+        )
+        resp.raise_for_status()
+        agg = resp.json()["processGroupStatus"]["aggregateSnapshot"]
+        running = agg.get("activeThreadCount", 0)
+        queued = agg.get("flowFilesQueued", 0)
+
+        # Check if any processors are running
+        flow_resp = http_requests.get(
+            f"{NIFI_HOST}/nifi-api/flow/process-groups/{pg_id}",
+            headers=headers,
+            timeout=10,
+        )
+        flow_resp.raise_for_status()
+        processors = flow_resp.json()["processGroupFlow"]["flow"].get("processors", [])
+        any_running = any(
+            p["status"]["runStatus"] == "Running" for p in processors
+        )
+        state = "RUNNING" if any_running else "STOPPED"
+        return {"state": state, "activeThreads": running, "queued": queued}
+    except Exception as exc:
+        logger.exception("Failed to get NiFi status")
+        raise HTTPException(status_code=502, detail=str(exc))
+
+
+@app.put("/nifi/start")
+def nifi_start():
+    """Start all processors in the NiFi root process group."""
+    try:
+        headers = _nifi_headers()
+        pg_id = _root_process_group_id()
+        resp = http_requests.put(
+            f"{NIFI_HOST}/nifi-api/flow/process-groups/{pg_id}",
+            headers=headers,
+            json={"id": pg_id, "state": "RUNNING"},
+            timeout=10,
+        )
+        resp.raise_for_status()
+        return {"state": "RUNNING"}
+    except Exception as exc:
+        logger.exception("Failed to start NiFi flow")
+        raise HTTPException(status_code=502, detail=str(exc))
+
+
+@app.put("/nifi/stop")
+def nifi_stop():
+    """Stop all processors in the NiFi root process group."""
+    try:
+        headers = _nifi_headers()
+        pg_id = _root_process_group_id()
+        resp = http_requests.put(
+            f"{NIFI_HOST}/nifi-api/flow/process-groups/{pg_id}",
+            headers=headers,
+            json={"id": pg_id, "state": "STOPPED"},
+            timeout=10,
+        )
+        resp.raise_for_status()
+        return {"state": "STOPPED"}
+    except Exception as exc:
+        logger.exception("Failed to stop NiFi flow")
+        raise HTTPException(status_code=502, detail=str(exc))
 
 
 @app.post("/parse")

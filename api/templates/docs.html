@@ -93,10 +93,60 @@
     }
     .tree pre { line-height: 1.4; }
     hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+    /* NiFi control bar */
+    .nifi-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .nifi-bar .label {
+      font-weight: 600;
+      margin-right: auto;
+    }
+    .nifi-bar .status {
+      font-size: 0.85rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+    .nifi-bar .status.running { background: #238636; color: #fff; }
+    .nifi-bar .status.stopped { background: #da3633; color: #fff; }
+    .nifi-bar .status.unknown { background: var(--border); color: var(--text-muted); }
+    .nifi-bar button {
+      border: none;
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .nifi-bar button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .nifi-bar .btn-start { background: #238636; color: #fff; }
+    .nifi-bar .btn-stop  { background: #da3633; color: #fff; }
   </style>
 </head>
 <body>
 <div class="container">
+
+  <div class="nifi-bar">
+    <span class="label">NiFi Pipeline</span>
+    <span id="nifi-status" class="status unknown">...</span>
+    <button class="btn-start" id="btn-start" onclick="nifiAction('start')" disabled>Start</button>
+    <button class="btn-stop"  id="btn-stop"  onclick="nifiAction('stop')"  disabled>Stop</button>
+  </div>
 
   <h1>MTA Subway Realtime - Real Time Pipeline</h1>
   <p class="subtitle">Alejandra Alvarado | Rudy Osorio | Erick Marroquin</p>
@@ -376,6 +426,9 @@ open http://localhost:8190</code></pre>
       <tr><td>GET</td><td><code>/health</code></td><td>—</td><td>Healthcheck, retorna <code>{"status": "ok"}</code></td></tr>
       <tr><td>POST</td><td><code>/parse</code></td><td><code>application/octet-stream</code></td><td>Recibe protobuf GTFS-RT, retorna JSON</td></tr>
       <tr><td>POST</td><td><code>/save</code></td><td><code>application/json</code></td><td>Recibe JSON parseado, guarda en PostgreSQL</td></tr>
+      <tr><td>GET</td><td><code>/nifi/status</code></td><td>—</td><td>Estado actual del flujo NiFi (RUNNING/STOPPED)</td></tr>
+      <tr><td>PUT</td><td><code>/nifi/start</code></td><td>—</td><td>Inicia todos los procesadores de NiFi</td></tr>
+      <tr><td>PUT</td><td><code>/nifi/stop</code></td><td>—</td><td>Detiene todos los procesadores de NiFi</td></tr>
     </tbody>
   </table>
 
@@ -445,6 +498,54 @@ docker compose up --build</code></pre>
     theme: 'default',
     securityLevel: 'loose',
   });
+</script>
+<script>
+  const statusEl = document.getElementById('nifi-status');
+  const btnStart = document.getElementById('btn-start');
+  const btnStop  = document.getElementById('btn-stop');
+  let busy = false;
+
+  function setStatus(state) {
+    const s = (state || 'UNKNOWN').toUpperCase();
+    statusEl.textContent = s;
+    statusEl.className = 'status ' + (s === 'RUNNING' ? 'running' : s === 'STOPPED' ? 'stopped' : 'unknown');
+    btnStart.disabled = busy || s === 'RUNNING';
+    btnStop.disabled  = busy || s === 'STOPPED';
+  }
+
+  async function fetchStatus() {
+    try {
+      const r = await fetch('/nifi/status');
+      if (!r.ok) throw new Error(r.statusText);
+      const d = await r.json();
+      setStatus(d.state);
+    } catch {
+      setStatus('UNKNOWN');
+    }
+  }
+
+  async function nifiAction(action) {
+    busy = true;
+    btnStart.disabled = true;
+    btnStop.disabled  = true;
+    statusEl.textContent = action === 'start' ? 'STARTING...' : 'STOPPING...';
+    statusEl.className = 'status unknown';
+    try {
+      const r = await fetch('/nifi/' + action, { method: 'PUT' });
+      if (!r.ok) throw new Error(r.statusText);
+      const d = await r.json();
+      busy = false;
+      setStatus(d.state);
+    } catch (e) {
+      busy = false;
+      statusEl.textContent = 'ERROR';
+      statusEl.className = 'status unknown';
+      btnStart.disabled = false;
+      btnStop.disabled  = false;
+    }
+  }
+
+  fetchStatus();
 </script>
 </body>
 </html>
