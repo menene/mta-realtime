@@ -60,6 +60,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin123}
     ports:
       - "8902:8000"
+    volumes:
+      - ./docs:/app/docs:ro
     networks:
       - mta
     healthcheck:

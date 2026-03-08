@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MTA Subway Realtime - Docs</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-subtle: #1f6feb33;
+      --green: #3fb950;
+      --orange: #d29922;
+      --red: #f85149;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+    h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+    h2 {
+      font-size: 1.5rem;
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 1.17rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+    p { margin-bottom: 1rem; }
+    .subtitle { color: var(--text-muted); margin-bottom: 1.5rem; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    ol, ul { margin-bottom: 1rem; padding-left: 2rem; }
+    li { margin-bottom: 0.3rem; }
+    strong { color: #f0f6fc; }
+    code {
+      background: var(--surface);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    }
+    pre {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+    pre code { background: none; padding: 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+    }
+    th { background: var(--surface); font-weight: 600; }
+    blockquote {
+      border-left: 3px solid var(--border);
+      padding: 0.5rem 1rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    img {
+      max-width: 100%;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+    .mermaid {
+      background: #fff;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .tree pre { line-height: 1.4; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <h1>MTA Subway Realtime - Real Time Pipeline</h1>
+  <p class="subtitle">Alejandra Alvarado | Rudy Osorio | Erick Marroquin</p>
+
+  <h2>Proyecto final - Big Data 2</h2>
+  <p>Pipeline de datos en tiempo real que ingesta, parsea, almacena y visualiza la informacion del subway de Nueva York usando los feeds GTFS-Realtime de la MTA.</p>
+
+  <h2>Objetivo</h2>
+  <p>Construir una plataforma de datos que:</p>
+  <ol>
+    <li><strong>Ingeste</strong> los feeds GTFS-RT (protobuf) de la MTA en tiempo real</li>
+    <li><strong>Parsee</strong> el protobuf a JSON estructurado</li>
+    <li><strong>Almacene</strong> posiciones de trenes y predicciones de llegada en PostgreSQL</li>
+    <li><strong>Enriquezca</strong> los datos con schedules estaticos GTFS para deteccion de delays</li>
+    <li><strong>Visualice</strong> los datos mediante dashboards interactivos en Superset</li>
+  </ol>
+
+  <h2>Arquitectura</h2>
+  <div class="mermaid">
+graph TD
+    MTA["MTA API&lt;br&gt;(GTFS)"]
+    NiFi["Apache NiFi&lt;br&gt;:8080"]
+    API["FastAPI Parser&lt;br&gt;:8000"]
+    PG["PostgreSQL&lt;br&gt;:5432"]
+    SS["Superset&lt;br&gt;:8088"]
+
+    MTA -- "HTTPS&lt;br&gt;(GTFS)" --> NiFi
+    NiFi -- "POST /parse&lt;br&gt;(GTFS)" --> API
+    API -- "Response&lt;br&gt;(JSON)" --> NiFi
+    NiFi -- "POST /save&lt;br&gt;(JSON)" --> API
+    API -- "INSERT SQL" --> PG
+    SS -- "SQLAlchemy&lt;br&gt;(SELECT)" --> PG
+
+    style MTA fill:#4a90d9,stroke:#4a90d9,color:#fff
+    style NiFi fill:#f5a623,stroke:#f5a623,color:#fff
+    style API fill:#4cd964,stroke:#4cd964,color:#fff
+    style PG fill:#4a7b9d,stroke:#4a7b9d,color:#fff
+    style SS fill:#e74c3c,stroke:#e74c3c,color:#fff
+  </div>
+  <p><img src="/static/arquitectura.png" alt="Arquitectura"></p>
+  <p>NiFi orquesta todo el flujo: cada 30 segundos hace fetch del feed GTFS-RT de la MTA, lo envia a FastAPI para parsearlo de protobuf a JSON, y luego lo envia de vuelta a FastAPI para persistirlo en PostgreSQL. Superset consulta las vistas gold directamente para los dashboards.</p>
+
+  <h2>Servicios</h2>
+  <table>
+    <thead>
+      <tr><th>Servicio</th><th>Contenedor</th><th>Puerto</th><th>Descripcion</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>PostgreSQL</strong></td><td><code>mta-postgres</code></td><td><code>5432</code></td><td>Almacena datos de la MTA y metadatos de Superset</td></tr>
+      <tr><td><strong>FastAPI</strong></td><td><code>mta-api</code></td><td><code>8000</code></td><td>Parsea protobuf GTFS-RT a JSON y guarda a la base de datos</td></tr>
+      <tr><td><strong>NiFi</strong></td><td><code>mta-nifi</code></td><td><code>8080</code></td><td>Orquesta la ingesta: fetch, parse y carga a la base</td></tr>
+      <tr><td><strong>Superset</strong></td><td><code>mta-superset</code></td><td><code>8190</code></td><td>Dashboards y visualizacion de datos</td></tr>
+    </tbody>
+  </table>
+  <p>Todos los servicios comparten la red Docker <code>mta</code> (bridge), lo que permite la comunicacion interna por nombre de contenedor.</p>
+
+  <h2>Flujo de Datos</h2>
+  <div class="mermaid">
+graph LR
+    MTA["MTA API"] -- "protobuf" --> NiFi1["NiFi (fetch)"]
+    NiFi1 -- "protobuf" --> API1["FastAPI (parse)"]
+    API1 -- "JSON" --> NiFi2["NiFi (route)"]
+    NiFi2 -- "JSON" --> API2["FastAPI (save)"]
+    API2 -- "SQL INSERT" --> PG["PostgreSQL"]
+    PG -- "SQL SELECT" --> SS["Superset"]
+
+    style MTA fill:#4cd964,stroke:#4cd964,color:#fff
+    style NiFi1 fill:#4a90d9,stroke:#4a90d9,color:#fff
+    style API1 fill:#f5a623,stroke:#f5a623,color:#fff
+    style NiFi2 fill:#4a90d9,stroke:#4a90d9,color:#fff
+    style API2 fill:#f5a623,stroke:#f5a623,color:#fff
+    style PG fill:#4a7b9d,stroke:#4a7b9d,color:#fff
+    style SS fill:#e74c3c,stroke:#e74c3c,color:#fff
+  </div>
+  <p><img src="/static/flujo-datos.png" alt="Flujo de Datos"></p>
+
+  <h2>Modelo de Datos — Arquitectura Medallion</h2>
+  <p>El modelo sigue una <strong>arquitectura medallion</strong> con tres capas: Bronze para datos crudos, Silver para datos de referencia, y Gold para vistas enriquecidas listas para consumo.</p>
+
+  <div class="mermaid">
+erDiagram
+    %% -- Bronze: Dimension Tables --
+    routes {
+        serial id PK
+        varchar name UK
+        varchar long_name
+        text description
+        smallint route_type
+        varchar route_color
+        varchar text_color
+        integer sort_order
+    }
+
+    stops {
+        serial id PK
+        varchar name UK
+        varchar stop_name
+        numeric stop_lat
+        numeric stop_lon
+        smallint location_type
+        varchar parent_station
+    }
+
+    trips {
+        serial id PK
+        varchar name UK
+    }
+
+    train_statuses {
+        serial id PK
+        varchar name UK
+    }
+
+    %% -- Bronze: Fact Tables (Realtime) --
+    vehicle_positions {
+        bigserial id PK
+        integer route_id FK
+        integer trip_id FK
+        integer stop_id FK
+        integer status_id FK
+        integer current_stop_sequence
+        varchar start_time
+        varchar start_date
+        smallint direction_id
+        bigint timestamp
+        timestamptz recorded_at
+    }
+
+    time_updates {
+        bigserial id PK
+        integer route_id FK
+        integer trip_id FK
+        integer stop_id FK
+        varchar start_time
+        varchar start_date
+        smallint direction_id
+        bigint arrival_time
+        bigint departure_time
+        timestamptz recorded_at
+    }
+
+    %% -- Silver: GTFS Static Schedule --
+    calendar {
+        varchar service_id PK
+        smallint monday
+        smallint tuesday
+        smallint wednesday
+        smallint thursday
+        smallint friday
+        smallint saturday
+        smallint sunday
+        varchar start_date
+        varchar end_date
+    }
+
+    calendar_dates {
+        varchar service_id FK
+        varchar date
+        smallint exception_type
+    }
+
+    scheduled_trips {
+        varchar trip_id PK
+        varchar route_id
+        varchar service_id FK
+        varchar trip_headsign
+        smallint direction_id
+        varchar shape_id
+    }
+
+    stop_times {
+        varchar trip_id FK
+        varchar stop_id
+        varchar arrival_time
+        varchar departure_time
+        integer stop_sequence
+    }
+
+    %% -- Relationships --
+    routes ||--o{ vehicle_positions : "route_id"
+    trips ||--o{ vehicle_positions : "trip_id"
+    stops ||--o{ vehicle_positions : "stop_id"
+    train_statuses ||--o{ vehicle_positions : "status_id"
+
+    routes ||--o{ time_updates : "route_id"
+    trips ||--o{ time_updates : "trip_id"
+    stops ||--o{ time_updates : "stop_id"
+
+    calendar ||--o{ calendar_dates : "service_id"
+    calendar ||--o{ scheduled_trips : "service_id"
+    scheduled_trips ||--o{ stop_times : "trip_id"
+  </div>
+  <p><img src="/static/modelo-datos.png" alt="Modelo de Datos"></p>
+
+  <h3>Bronze — Datos Crudos y Dimensiones</h3>
+  <p>Datos en tiempo real tal como llegan del feed de la MTA. Incluye tablas de dimension (<code>routes</code>, <code>stops</code>, <code>trips</code>, <code>train_statuses</code>) y tablas de hechos (<code>vehicle_positions</code>, <code>time_updates</code>) con deduplicacion automatica.</p>
+
+  <h3>Silver — Schedule GTFS Estatico</h3>
+  <p>Horarios oficiales del subway cargados una sola vez desde los archivos GTFS estaticos. Incluye <code>calendar</code>, <code>calendar_dates</code>, <code>scheduled_trips</code> y <code>stop_times</code>.</p>
+
+  <h3>Gold — Vistas Enriquecidas</h3>
+  <p>Vistas SQL que combinan datos realtime con los schedules estaticos:</p>
+  <ul>
+    <li><strong><code>v_gold_vehicle_positions</code></strong> — Posiciones de trenes enriquecidas con nombre de ruta, color, estacion y coordenadas. Lista para visualizar en un mapa.</li>
+    <li><strong><code>v_gold_time_updates</code></strong> — Compara las predicciones de llegada en tiempo real contra el horario programado para detectar delays. Si un tren tiene mas de 5 minutos de retraso se marca como <code>DELAYED</code>.</li>
+  </ul>
+
+  <h2>Estructura del Proyecto</h2>
+  <div class="tree">
+<pre><code>mta-nifi/
+├── api/
+│   ├── main.py                  # App FastAPI (endpoints /health, /parse, /save)
+│   ├── templates/
+│   │   └── docs.html            # Documentacion HTML
+│   └── requirements.txt         # Dependencias Python
+├── database/
+│   ├── mta.sql                  # DDL: tablas, indices, constraints, vistas gold
+│   ├── seed.sql                 # Datos iniciales (rutas, estados, calendario)
+│   ├── seed_gtfs.sql            # Datos GTFS estaticos (scheduled_trips, stop_times)
+│   ├── gtfs/                    # Archivos fuente GTFS (routes, stops, trips, etc.)
+│   └── mta_g_feed.json          # Ejemplo de feed GTFS-RT convertido a JSON
+├── dockerfiles/
+│   ├── api/
+│   │   └── Dockerfile           # Imagen Python 3.11-slim + uvicorn
+│   ├── nifi/
+│   │   ├── Dockerfile           # NiFi 1.23.2 + driver JDBC PostgreSQL
+│   │   └── set-proxy-host.sh    # Script de configuracion de proxy
+│   ├── postgres/
+│   │   ├── Dockerfile           # PostgreSQL 15-alpine
+│   │   └── init/
+│   │       └── 01_init.sql      # Crea la base de datos de Superset
+│   └── superset/
+│       ├── Dockerfile           # Superset 3.1.3 + psycopg2
+│       ├── docker-entrypoint.sh # Bootstrap: migrations, admin, datasource
+│       └── superset_config.py   # Configuracion de Superset
+├── docs/
+│   ├── arquitectura.mmd         # Diagrama de arquitectura (Mermaid)
+│   ├── flujo-datos.mmd          # Diagrama de flujo de datos (Mermaid)
+│   └── modelo-datos.mmd         # Diagrama ER del modelo de datos (Mermaid)
+├── .env                         # Variables de entorno (no versionado)
+├── .env.example                 # Plantilla de variables de entorno
+├── docker-compose.yml           # Orquestacion de todos los servicios (no versionado)
+├── docker-compose.yml.example   # Plantilla de docker-compose
+└── README.md</code></pre>
+  </div>
+
+  <h2>Inicio Rapido</h2>
+
+  <h3>Prerequisitos</h3>
+  <ul><li>Docker y Docker Compose</li></ul>
+
+  <h3>1. Copiar archivos de configuracion</h3>
+  <p>Tanto <code>docker-compose.yml</code> como <code>.env</code> no se versionan ya que dependen de cada entorno. Copiar las plantillas y ajustar segun sea necesario:</p>
+  <pre><code>cp docker-compose.yml.example docker-compose.yml
+cp .env.example .env
+# Editar ambos archivos con tus credenciales y configuracion</code></pre>
+
+  <h3>2. Levantar los servicios</h3>
+  <pre><code>docker compose up --build</code></pre>
+
+  <h3>3. Verificar que todo funciona</h3>
+  <pre><code># Health del parser
+curl http://localhost:8000/health
+
+# NiFi UI
+open http://localhost:8080/nifi/
+
+# Superset UI
+open http://localhost:8190</code></pre>
+
+  <h2>API — FastAPI</h2>
+  <table>
+    <thead>
+      <tr><th>Metodo</th><th>Ruta</th><th>Content-Type</th><th>Descripcion</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>GET</td><td><code>/health</code></td><td>—</td><td>Healthcheck, retorna <code>{"status": "ok"}</code></td></tr>
+      <tr><td>POST</td><td><code>/parse</code></td><td><code>application/octet-stream</code></td><td>Recibe protobuf GTFS-RT, retorna JSON</td></tr>
+      <tr><td>POST</td><td><code>/save</code></td><td><code>application/json</code></td><td>Recibe JSON parseado, guarda en PostgreSQL</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Ejemplo: parsear un feed</h3>
+  <pre><code>curl -X POST http://localhost:8000/parse \
+  -H "Content-Type: application/octet-stream" \
+  --data-binary @feed.pb</code></pre>
+
+  <h3>Ejemplo: guardar a la base de datos</h3>
+  <p>El endpoint <code>/save</code> recibe el JSON generado por <code>/parse</code> y lo persiste en las tablas <code>vehicle_positions</code> y <code>time_updates</code>. NiFi orquesta este flujo automaticamente.</p>
+
+  <h2>Consultas Visualizacion</h2>
+  <p>Una vez que hay datos en la base, las vistas gold estan disponibles para consulta directa:</p>
+  <pre><code>-- Posiciones de trenes enriquecidas
+SELECT * FROM v_gold_vehicle_positions LIMIT 20;
+
+-- Delays: prediccion vs. schedule
+SELECT route, stop_name, direction, delay_seconds, trip_status
+FROM v_gold_time_updates
+WHERE trip_status = 'DELAYED'
+ORDER BY delay_seconds DESC
+LIMIT 20;</code></pre>
+
+  <h2>Credenciales por Defecto</h2>
+  <table>
+    <thead>
+      <tr><th>Servicio</th><th>Usuario</th><th>Contrasena</th><th>Notas</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>PostgreSQL</td><td><code>admin</code></td><td><code>admin123</code></td><td>Puerto host: <code>5433</code></td></tr>
+      <tr><td>NiFi</td><td><code>admin</code></td><td><code>adminpassword123</code></td><td>Puerto: <code>8080</code></td></tr>
+      <tr><td>Superset</td><td><code>admin</code></td><td><code>admin123</code></td><td>Puerto: <code>8190</code></td></tr>
+    </tbody>
+  </table>
+  <blockquote>Estas credenciales son solo para desarrollo local. Cambiarlas en <code>.env</code> para cualquier otro entorno.</blockquote>
+
+  <h2>Reiniciar desde Cero</h2>
+  <pre><code>docker compose down -v
+docker compose up --build</code></pre>
+  <p>El flag <code>-v</code> elimina todos los volumenes (datos de PostgreSQL, configuracion de NiFi, etc.), lo que fuerza una reinicializacion completa.</p>
+
+  <h2>Referencias</h2>
+  <ul>
+    <li><a href="https://api.mta.info/">MTA Realtime Data Feeds</a> — API de datos en tiempo real del subway de Nueva York</li>
+    <li><a href="https://gtfs.org/documentation/realtime/reference/">GTFS Realtime Reference</a> — Especificacion del formato GTFS-RT (protobuf)</li>
+    <li><a href="https://gtfs.org/documentation/schedule/reference/">GTFS Static Reference</a> — Especificacion del formato GTFS estatico (schedules, stops, calendar)</li>
+    <li><a href="https://github.com/MobilityData/gtfs-realtime-bindings/tree/master/python">gtfs-realtime-bindings (Python)</a> — Bindings de protobuf para GTFS-RT en Python</li>
+    <li><a href="https://protobuf.dev/">Protocol Buffers</a> — Formato de serializacion binaria de Google</li>
+    <li><a href="https://fastapi.tiangolo.com/">FastAPI</a> — Framework web async para Python</li>
+    <li><a href="https://docs.pydantic.dev/">Pydantic</a> — Validacion de datos y serializacion para Python</li>
+    <li><a href="https://www.uvicorn.org/">Uvicorn</a> — Servidor ASGI para Python</li>
+    <li><a href="https://www.psycopg.org/docs/">psycopg2</a> — Adaptador PostgreSQL para Python</li>
+    <li><a href="https://nifi.apache.org/docs.html">Apache NiFi</a> — Plataforma de integracion y automatizacion de flujos de datos</li>
+    <li><a href="https://www.postgresql.org/docs/15/">PostgreSQL 15</a> — Base de datos relacional</li>
+    <li><a href="https://superset.apache.org/docs/intro">Apache Superset</a> — Plataforma de visualizacion y BI</li>
+    <li><a href="https://docs.docker.com/compose/">Docker Compose</a> — Orquestacion de contenedores multi-servicio</li>
+    <li><a href="https://mermaid.js.org/">Mermaid</a> — Diagramas como codigo, usados para la documentacion del proyecto</li>
+    <li><a href="https://www.databricks.com/glossary/medallion-architecture">Medallion Architecture</a> — Patron de arquitectura de datos Bronze/Silver/Gold</li>
+  </ul>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    securityLevel: 'loose',
+  });
+</script>
+</body>
+</html>

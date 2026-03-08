@@ -3,3 +3,4 @@ uvicorn[standard]
 gtfs-realtime-bindings
 protobuf
 psycopg2-binary
+jinja2
