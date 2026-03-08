@@ -33,5 +33,8 @@ UPLOAD_FOLDER = "/app/superset_home/uploads/"
 IMG_UPLOAD_FOLDER = "/app/superset_home/img/"
 IMG_UPLOAD_URL = "/static/uploads/"
 
+# ─── Mapbox ──────────────────────────────────────────────────────────────────
+MAPBOX_API_KEY = os.environ.get("MAPBOX_API_KEY", "")
+
 # ─── Logging ──────────────────────────────────────────────────────────────────
 ENABLE_TIME_ROTATE = True
