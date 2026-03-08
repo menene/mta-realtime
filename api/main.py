@@ -25,20 +25,17 @@ NIFI_USERNAME = os.getenv("NIFI_USERNAME", "admin")
 NIFI_PASSWORD = os.getenv("NIFI_PASSWORD", "adminpassword123")
 
 
-def _nifi_token() -> str:
-    """Obtain a NiFi access token via username/password."""
-    resp = http_requests.post(
-        f"{NIFI_HOST}/nifi-api/access/token",
-        data={"username": NIFI_USERNAME, "password": NIFI_PASSWORD},
-        timeout=10,
-    )
-    resp.raise_for_status()
-    return resp.text
-
-
 def _nifi_headers() -> dict:
-    token = _nifi_token()
-    return {"Authorization": f"Bearer {token}"}
+    """Return auth headers for NiFi. Skips token auth when NiFi runs over HTTP."""
+    if NIFI_HOST.startswith("https"):
+        resp = http_requests.post(
+            f"{NIFI_HOST}/nifi-api/access/token",
+            data={"username": NIFI_USERNAME, "password": NIFI_PASSWORD},
+            timeout=10,
+        )
+        resp.raise_for_status()
+        return {"Authorization": f"Bearer {resp.text}"}
+    return {}
 
 
 def _root_process_group_id() -> str:
