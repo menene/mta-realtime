@@ -282,6 +282,17 @@ async def parse(request: Request):
     return MessageToDict(feed)
 
 
+@app.post("/ingest")
+async def ingest(request: Request):
+    """Parse raw protobuf and save to DB in one step."""
+    body = await request.body()
+    proto = gtfs_realtime_pb2.FeedMessage()
+    proto.ParseFromString(body)
+    feed_dict = MessageToDict(proto)
+    feed = FeedMessage.model_validate(_snake_to_camel(feed_dict))
+    return await save(feed)
+
+
 @app.post("/save")
 async def save(feed: FeedMessage):
     entities = feed.entity
