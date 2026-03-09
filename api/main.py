@@ -363,7 +363,7 @@ async def save(feed: FeedMessage):
                                      start_time, start_date, direction_id,
                                      arrival_time, departure_time)
                                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                                ON CONFLICT (trip_id, stop_id, start_date, arrival_time) DO NOTHING
+                                ON CONFLICT DO NOTHING
                                 """,
                                 (
                                     route_id, trip_id, stop_id,
