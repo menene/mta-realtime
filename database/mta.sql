@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS time_updates (
 
 -- Prevent exact duplicate predictions
 CREATE UNIQUE INDEX IF NOT EXISTS uq_time_update
-    ON time_updates (trip_id, stop_id, arrival_time);
+    ON time_updates (trip_id, stop_id, start_date, arrival_time);
 
 -- Common query patterns
 CREATE INDEX IF NOT EXISTS idx_tu_route     ON time_updates (route_id);
